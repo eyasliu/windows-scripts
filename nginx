@@ -15,7 +15,7 @@ start() {
 }
 stop() {
    echo "Stopping NGINX Web Server: \c"
-   pv -kf nginx*
+   "pv.exe" -kf nginx*
    RETVAL=$?
    [ $RETVAL -eq 0 ] && echo "ok" || echo "failed"
    return $RETVAL

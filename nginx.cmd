@@ -1,1 +1,1 @@
-@bash bin/nginx %*
+@bash nginx %*

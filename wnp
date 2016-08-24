@@ -1,0 +1,43 @@
+#!/bin/sh
+
+PHP_CGI="/d/server/php7.1/php-cgi.exe"
+PHP_DIR="/d/server/php7.1"
+
+RETVAL=0
+
+start() {
+   nginx start
+   echo "Starting PHP-CGI: "
+   RunHiddenConsole $PHP_CGI -b 127.0.0.1:9000 -c $PHP_DIR/php.ini
+   RETVAL=$?
+   [ $RETVAL -eq 0 ] && echo "ok" || echo "failed"
+   return $RETVAL
+}
+stop() {
+   echo "Stoping NGINX Web Server: "
+   nginx stop 
+   echo "Stoping php-cgi" 
+   taskkill -IM php*
+
+   return 0
+}
+case "$1" in
+   start)
+      start
+      ;;
+   stop)
+      stop
+      ;;
+   restart)
+      stop
+      start
+      ;;
+   help)
+      echo "Usage: $0 {start|stop|restart}"
+      ;;
+   *)
+      exit 0
+   
+      
+esac
+exit $RETVAL

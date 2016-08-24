@@ -1,0 +1,38 @@
+#!/bin/sh
+
+NGINX_DIR="/d/server/nginx-1.11.3"
+NGINX_CMD="/d/server/nginx-1.11.3/nginx.exe"
+NGINX_CONF="/d/server/nginx-1.11.3/conf/nginx.conf"
+RETVAL=0
+
+cd $NGINX_DIR
+start() {
+   echo "Starting NGINX Web Server: \c"
+   $NGINX_CMD -c $NGINX_CONF &
+   RETVAL=$?
+   [ $RETVAL -eq 0 ] && echo "ok" || echo "failed"
+   return $RETVAL
+}
+stop() {
+   echo "Stopping NGINX Web Server: \c"
+   pv -kf nginx*
+   RETVAL=$?
+   [ $RETVAL -eq 0 ] && echo "ok" || echo "failed"
+   return $RETVAL
+}
+case "$1" in
+   start)
+      start
+      ;;
+   stop)
+      stop
+      ;;
+   restart)
+      stop
+      start
+      ;;
+   *)
+      echo "Usage: $0 {start|stop|restart}"
+      exit 1
+esac
+exit $RETVAL

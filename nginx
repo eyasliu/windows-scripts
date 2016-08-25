@@ -7,15 +7,16 @@ RETVAL=0
 
 cd $NGINX_DIR
 start() {
-   echo "Starting NGINX Web Server: \c"
+   echo "Starting NGINX Web Server: "
    $NGINX_CMD -c $NGINX_CONF &
    RETVAL=$?
    [ $RETVAL -eq 0 ] && echo "ok" || echo "failed"
    return $RETVAL
 }
 stop() {
-   echo "Stopping NGINX Web Server: \c"
-   "pv.exe" -kf nginx*
+   echo "Stopping NGINX Web Server: "
+   # "pv.exe" -kf nginx*
+   taskkill -F -IM nginx* -T
    RETVAL=$?
    [ $RETVAL -eq 0 ] && echo "ok" || echo "failed"
    return $RETVAL
@@ -31,8 +32,12 @@ case "$1" in
       stop
       start
       ;;
-   *)
+   help)
       echo "Usage: $0 {start|stop|restart}"
-      exit 1
+      ;;
+   *)
+      $NGINX_CMD $*
+   
+      
 esac
 exit $RETVAL

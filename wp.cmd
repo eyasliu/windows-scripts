@@ -1,0 +1,1 @@
+@"D:\server\php7.0\php.exe" c:\bin\wp-cli.phar %*
